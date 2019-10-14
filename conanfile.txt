@@ -1,0 +1,5 @@
+[requires]
+tcl/8.6.9@bincrafters/stable
+
+[generators]
+cmake
