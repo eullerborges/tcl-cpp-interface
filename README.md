@@ -2,6 +2,21 @@
 Implementation of a C++ interface for the Tcl C API.
 
 ## Development
+### Building
+You'll need [conan](https://docs.conan.io/en/latest/installation.html) installed.
+This project uses packages provided by the [bincrafters](https://bintray.com/bincrafters/public-conan). You must add it to your conan installation:
+~~~sh
+conan remote add bincrafters "https://api.bintray.com/conan/bincrafters/public-conan"
+~~~
+
+After that, create a build directory, install the dependencies and build:
+~~~sh
+mkdir build && cd build
+conan install ..
+cmake ..
+make
+~~~
+
 ### Code navigation and autocompletion
 This project exports compilation commands by default to
 `compile_commands.json`. This enables integration into language servers like
