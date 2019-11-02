@@ -1,11 +1,20 @@
-cmake_minimum_required(VERSION 2.8.12)
-project(TclWrapper)
+cmake_minimum_required(VERSION 3.8)
+project(TclWrapper VERSION 0.1.0
+  DESCRIPTION "C++ wrapper for Tcl"
+  LANGUAGES CXX)
 
-add_definitions("-std=c++17")
+### Require out-of-source builds
+file(TO_CMAKE_PATH "${PROJECT_BINARY_DIR}/CMakeLists.txt" LOC_PATH)
+if(EXISTS "${LOC_PATH}")
+    message(FATAL_ERROR "You cannot build in a source directory (or any directory with a CMakeLists.txt file). Please make a build subdirectory. Feel free to remove CMakeCache.txt and CMakeFiles.")
+endif()
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
-add_executable(tcl_test src/main.cpp src/Interp.cpp src/Object.cpp src/String.cpp src/List.cpp src/Dict.cpp)
-target_link_libraries(tcl_test ${CONAN_LIBS})
+include(CTest)
+
+add_subdirectory(src)
+add_subdirectory(tests/core)

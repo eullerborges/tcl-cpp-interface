@@ -1,4 +1,4 @@
-#include "Interp.h"
+#include "tcl++/core/Interp.h"
 
 #include "tcl.h"
 

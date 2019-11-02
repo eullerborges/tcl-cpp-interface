@@ -1,7 +1,9 @@
-#include "Dict.h"
+#include "tcl++/core/Dict.h"
 
-#include "List.h"
-#include "String.h"
+
+#include "tcl++/core/List.h"
+#include "tcl++/core/String.h"
+
 #include "tcl.h"
 
 using tcl::Dict;

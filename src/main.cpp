@@ -1,8 +1,8 @@
-#include "Interp.h"
-#include "String.h"
-#include "List.h"
-#include "Dict.h"
-#include "defs.h"
+#include "tcl++/core/Interp.h"
+#include "tcl++/core/String.h"
+#include "tcl++/core/List.h"
+#include "tcl++/core/Dict.h"
+#include "tcl++/core/defs.h"
 
 #include <cassert>
 #include <iostream>
@@ -19,13 +19,13 @@ int main() {
   tcl::List l2;
   l2.append(tcl::String("blupt")).append(tcl::String("blarg"));
   l.append(tcl::String("ble")).append(tcl::String("bla")).splice(l2);
-  // std::cout << "List: " << l.getStringRep() << ", size: " << l.size() << "\n";
+  std::cout << "List: " << l.getStringRep() << ", size: " << l.size() << "\n";
 
-  tcl::Dict d;
-  d.put(tcl::String("potato"), tcl::String("head"));
-  d.put(tcl::String("oh god"), l);
-  std::cout << "Dict: " << d.getStringRep() << "\n";
-  std::cout << "Key: " << d.get<tcl::List>(tcl::String("oh god"))->getStringRep();
+  // tcl::Dict d;
+  // d.put(tcl::String("potato"), tcl::String("head"));
+  // d.put(tcl::String("oh god"), l);
+  // std::cout << "Dict: " << d.getStringRep() << "\n";
+  // std::cout << "Key: " << d.get<tcl::List>(tcl::String("oh god"))->getStringRep();
 
   return 0;
 }
