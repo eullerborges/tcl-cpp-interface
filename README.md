@@ -14,6 +14,7 @@ After that, create a build directory, install the dependencies and build:
 mkdir build && cd build
 conan install ..
 cmake ..
+cmake -DCMAKE_BUILD_TYPE=Release ..  ;# Use debug if you're a developer
 make
 ~~~
 
