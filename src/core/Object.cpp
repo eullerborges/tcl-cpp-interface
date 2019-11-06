@@ -19,7 +19,23 @@ Object::Object(const Object& other)
   incrRefCount();
 }
 
-Object& Object::operator=(const Object& other) { return *this; }
+Object::Object(Object&& other)
+  : m_nativeRep(other.m_nativeRep)
+{
+  other.m_nativeRep = nullptr;
+}
+
+Object& Object::operator=(const Object& other) {
+  decrRefCount();
+  m_nativeRep = Tcl_DuplicateObj(other.m_nativeRep);
+  incrRefCount();
+  return *this;
+}
+
+Object &Object::operator=(Object &&other) {
+  std::swap(m_nativeRep, other.m_nativeRep);
+  return *this;
+}
 
 void Object::incrRefCount() {
   if (m_nativeRep) Tcl_IncrRefCount(m_nativeRep);

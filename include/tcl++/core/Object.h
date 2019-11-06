@@ -19,7 +19,9 @@ class Object {
   Object(Tcl_Obj* transferredObj);
   virtual ~Object();
   Object(const Object& other);
+  Object(Object&& other);
   Object& operator=(const Object& other);
+  Object &operator=(Object&& other);
 
   Tcl_Obj* getNativeRep() const { return m_nativeRep; }
 
