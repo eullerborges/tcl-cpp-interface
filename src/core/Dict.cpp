@@ -16,8 +16,9 @@ std::size_t Dict::size() const {
   return sz;
 }
 
-void Dict::put(const tcl::Object& key, const tcl::Object& value) {
+Dict& Dict::put(const tcl::Object& key, const tcl::Object& value) {
   Tcl_DictObjPut(nullptr, m_nativeRep, key.getNativeRep(), value.getNativeRep());
+  return *this;
 }
 
 template <class TclClass>
