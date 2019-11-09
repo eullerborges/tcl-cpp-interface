@@ -10,9 +10,11 @@ tcl::CompletionCode toCompletionCode(int code) {
 }
 }  // namespace
 
-Interp::Interp() : m_nativeRep{Tcl_CreateInterp()} {}
+Interp::Interp(Tcl_Interp* interp) : m_nativeRep{interp}, m_owning(false) {}
 
-Interp::~Interp() { Tcl_DeleteInterp(m_nativeRep); }
+Interp::Interp() : m_nativeRep{Tcl_CreateInterp()}, m_owning(true) {}
+
+Interp::~Interp() { if(m_owning) Tcl_DeleteInterp(m_nativeRep); }
 
 tcl::CompletionCode Interp::eval(const tcl::Object& cmd, bool global_context) {
   m_lastCompletionCode = toCompletionCode(Tcl_EvalObjEx(
@@ -33,4 +35,14 @@ tcl::Object Interp::getResult() const {
 
 tcl::Object Interp::getReturnOptions() const {
   return Tcl_GetReturnOptions(m_nativeRep, static_cast<int>(m_lastCompletionCode));
+}
+
+void Interp::setResult(const tcl::Object& obj) {
+  Tcl_SetObjResult(m_nativeRep, obj.getNativeRep());
+}
+
+bool Interp::setVar(const tcl::String &name, const tcl::Object &value,
+                    const tcl::String *optArrayElement) {
+  auto* arrayElement = optArrayElement? optArrayElement->getNativeRep() : nullptr;
+  return Tcl_ObjSetVar2(m_nativeRep, name.getNativeRep(), arrayElement, value.getNativeRep(), 0) != NULL;
 }
