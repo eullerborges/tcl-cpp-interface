@@ -17,6 +17,7 @@ conan_basic_setup()
 include(CTest)
 
 add_subdirectory(src)
+add_subdirectory(examples/extend)
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
   add_subdirectory(tests/core)
