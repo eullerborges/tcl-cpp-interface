@@ -4,6 +4,8 @@
 
 using tcl::String;
 
+String::String() : tcl::Object(Tcl_NewObj()) {}
+
 String::String(const char* cstr, std::size_t length)
     : tcl::Object(Tcl_NewStringObj(cstr, length)) {}
 
