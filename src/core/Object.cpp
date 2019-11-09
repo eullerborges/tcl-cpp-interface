@@ -3,6 +3,7 @@
 #include "tcl.h"
 
 #include <cassert>
+#include <stdexcept>
 
 using tcl::Object;
 
@@ -45,6 +46,9 @@ void Object::decrRefCount() {
 }
 
 std::string Object::getStringRep() const {
+  if (!m_nativeRep) {
+    throw std::runtime_error("String representation requested for uninitialized object");
+  }
   int length;
   const char* rep = Tcl_GetStringFromObj(m_nativeRep, &length);
   assert(rep);
