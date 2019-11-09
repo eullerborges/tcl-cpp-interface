@@ -13,7 +13,7 @@ SCENARIO("List base operations", "[list]") {
     WHEN("elements appended") {
       l.append("appended").append("elements");
       THEN("Size and string representation change") {
-        REQUIRE(l.size() == 2);
+        CHECK(l.size() == 2);
         REQUIRE(l.getStringRep() == "appended elements");
       }
     }
@@ -23,7 +23,7 @@ SCENARIO("List base operations", "[list]") {
       auto l3 = tcl::List().append("multiple").append("elements");
       l.append(l2).append(l3);
       THEN("Size and string representation change") {
-        REQUIRE(l.size() == 2);
+        CHECK(l.size() == 2);
         REQUIRE(l.getStringRep() == "single_element {multiple elements}");
       }
     }
@@ -33,7 +33,7 @@ SCENARIO("List base operations", "[list]") {
       auto to_splice = tcl::List().append("several").append(other).append("inside");
       l.splice(to_splice);
       THEN("Size and string representation change") {
-        REQUIRE(l.size() == 3);
+        CHECK(l.size() == 3);
         REQUIRE(l.getStringRep() == "several {underlying elements} inside");
       }
     }
