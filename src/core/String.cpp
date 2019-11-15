@@ -1,6 +1,6 @@
 #include "tcl++/core/String.h"
 
-#include "tcl.h"
+#include <tcl.h>
 
 using tcl::String;
 

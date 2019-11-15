@@ -1,8 +1,9 @@
-#include "tcl++/core/Interp.h"
 #include "tcl++/core/List.h"
+
+#include "tcl++/core/Interp.h"
 #include "tcl++/core/String.h"
 
-#include "catch2/catch.hpp"
+#include <catch2/catch.hpp>
 
 SCENARIO("List base operations", "[list]") {
   GIVEN("An initial Tcl list") {

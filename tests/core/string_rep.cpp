@@ -1,13 +1,12 @@
-#include "tcl++/core/String.h"
 #include "tcl++/core/Dict.h"
 #include "tcl++/core/Interp.h"
 #include "tcl++/core/List.h"
+#include "tcl++/core/String.h"
 
-#include "catch2/catch.hpp"
+#include <catch2/catch.hpp>
 
 namespace {
-std::shared_ptr<tcl::Object> toShared(tcl::Object&& obj)
-{
+std::shared_ptr<tcl::Object> toShared(tcl::Object&& obj) {
   return std::make_shared<tcl::Object>(std::move(obj));
 }
 
@@ -15,18 +14,16 @@ auto getFirstValueGenerator() {
   return Catch::Generators::values(
       {toShared(tcl::String("first string")),
        toShared(std::move(tcl::List().append("first").append("list"))),
-       toShared(std::move(tcl::Dict().put(
-           "first", tcl::List().append("test").append("dict"))))});
+       toShared(std::move(tcl::Dict().put("first", tcl::List().append("test").append("dict"))))});
 }
 
 auto getSecondValueGenerator() {
   return Catch::Generators::values(
       {toShared(tcl::String("second string")),
        toShared(std::move(tcl::List().append("second").append("list"))),
-       toShared(std::move(tcl::Dict().put(
-           "second", tcl::List().append("test").append("dict"))))});
+       toShared(std::move(tcl::Dict().put("second", tcl::List().append("test").append("dict"))))});
 }
-} // namespace
+}  // namespace
 
 SCENARIO("Tcl object string reps after operations", "[object_string_rep]") {
   GIVEN("The initialization of a string") {
@@ -63,9 +60,7 @@ SCENARIO("Tcl object string reps after operations", "[object_string_rep]") {
 
     WHEN("copy assignment operator") {
       *first = *other;
-      THEN("String representation changes") {
-        CHECK(first->getStringRep() == otherRep);
-      }
+      THEN("String representation changes") { CHECK(first->getStringRep() == otherRep); }
     }
 
     WHEN("move assignment operator") {

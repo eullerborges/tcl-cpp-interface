@@ -1,7 +1,8 @@
 #include "tcl++/core/String.h"
+
 #include "tcl++/core/Interp.h"
 
-#include "catch2/catch.hpp"
+#include <catch2/catch.hpp>
 
 SCENARIO("String base operations", "[string]") {
   GIVEN("The initialization of a Tcl String") {

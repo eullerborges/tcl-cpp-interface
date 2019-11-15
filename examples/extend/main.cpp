@@ -1,12 +1,12 @@
-#include "tcl++/extend/defs.h"
-#include "tcl.h"
-
 #include "tcl++/core/List.h"
+#include "tcl++/extend/defs.h"
 
-static int hello(ClientData cdata, Tcl_Interp *pInterp, int objc,
-                     Tcl_Obj *const objv[]) {
+#include <tcl.h>
+
+static int hello(ClientData cdata, Tcl_Interp *pInterp, int objc, Tcl_Obj *const objv[]) {
   tcl::Interp interp(pInterp);
-  interp.setResult(tcl::List().append("test").append("setting").append(tcl::List().append("one").append("result")));
+  interp.setResult(tcl::List().append("test").append("setting").append(
+      tcl::List().append("one").append("result")));
   return TCL_OK;
 }
 

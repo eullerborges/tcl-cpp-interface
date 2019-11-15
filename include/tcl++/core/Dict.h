@@ -9,7 +9,7 @@
 namespace tcl {
 
 class Dict : public Object {
-public:
+ public:
   using Object::Object;
   Dict();
 
@@ -26,6 +26,6 @@ public:
   std::size_t size() const;
 };
 
-}; // namespace tcl
+};  // namespace tcl
 
 #endif

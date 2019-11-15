@@ -8,6 +8,6 @@ struct Result {
   CompletionCode completionCode;
 };
 
-}; // namespace tcl
+};  // namespace tcl
 
 #endif

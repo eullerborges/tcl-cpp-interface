@@ -1,6 +1,6 @@
 #include "tcl++/core/Object.h"
 
-#include "tcl.h"
+#include <tcl.h>
 
 #include <cassert>
 #include <stdexcept>
@@ -9,22 +9,15 @@ using tcl::Object;
 
 Object::Object() : Object(Tcl_NewObj()) {}
 
-Object::Object(Tcl_Obj* transferredObj) : m_nativeRep(transferredObj) {
-  incrRefCount();
-}
+Object::Object(Tcl_Obj* transferredObj) : m_nativeRep(transferredObj) { incrRefCount(); }
 
 Object::~Object() { decrRefCount(); }
 
-Object::Object(const Object& other)
-    : m_nativeRep(Tcl_DuplicateObj(other.m_nativeRep)) {
+Object::Object(const Object& other) : m_nativeRep(Tcl_DuplicateObj(other.m_nativeRep)) {
   incrRefCount();
 }
 
-Object::Object(Object&& other)
-  : m_nativeRep(other.m_nativeRep)
-{
-  other.m_nativeRep = nullptr;
-}
+Object::Object(Object&& other) : m_nativeRep(other.m_nativeRep) { other.m_nativeRep = nullptr; }
 
 Object& Object::operator=(const Object& other) {
   decrRefCount();
@@ -33,7 +26,7 @@ Object& Object::operator=(const Object& other) {
   return *this;
 }
 
-Object &Object::operator=(Object &&other) {
+Object& Object::operator=(Object&& other) {
   std::swap(m_nativeRep, other.m_nativeRep);
   return *this;
 }

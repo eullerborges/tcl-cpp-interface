@@ -1,10 +1,9 @@
 #include "tcl++/core/Dict.h"
 
-
 #include "tcl++/core/List.h"
 #include "tcl++/core/String.h"
 
-#include "tcl.h"
+#include <tcl.h>
 
 using tcl::Dict;
 
@@ -28,9 +27,6 @@ std::optional<TclClass> Dict::get(const tcl::Object& key) const {
   return TclClass(valptr);
 }
 
-template
-std::optional<tcl::String> Dict::get(const tcl::Object& key) const;
-template
-std::optional<tcl::List> Dict::get(const tcl::Object& key) const;
-template
-std::optional<tcl::Dict> Dict::get(const tcl::Object& key) const;
+template std::optional<tcl::String> Dict::get(const tcl::Object& key) const;
+template std::optional<tcl::List> Dict::get(const tcl::Object& key) const;
+template std::optional<tcl::Dict> Dict::get(const tcl::Object& key) const;

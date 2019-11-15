@@ -1,7 +1,7 @@
-#include "tcl++/core/Interp.h"
-#include "tcl++/core/String.h"
-#include "tcl++/core/List.h"
 #include "tcl++/core/Dict.h"
+#include "tcl++/core/Interp.h"
+#include "tcl++/core/List.h"
+#include "tcl++/core/String.h"
 #include "tcl++/core/defs.h"
 
 #include <cassert>

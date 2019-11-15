@@ -3,8 +3,7 @@
 #include "tcl++/core/List.h"
 #include "tcl++/core/String.h"
 
-#include "catch2/catch.hpp"
-
+#include <catch2/catch.hpp>
 #include <memory>
 
 SCENARIO("Object memory management", "[object]") {
@@ -14,9 +13,7 @@ SCENARIO("Object memory management", "[object]") {
     WHEN("copy constructed") {
       tcl::String other;
       tcl::String first{other};
-      THEN("new object is allocated") {
-        CHECK(first.getNativeRep() != other.getNativeRep());
-      }
+      THEN("new object is allocated") { CHECK(first.getNativeRep() != other.getNativeRep()); }
     }
 
     WHEN("move constructed") {
@@ -37,9 +34,7 @@ SCENARIO("Object memory management", "[object]") {
     WHEN("copy assigned") {
       tcl::String other;
       first = other;
-      THEN("new object is allocated") {
-        CHECK(first.getNativeRep() != other.getNativeRep());
-      }
+      THEN("new object is allocated") { CHECK(first.getNativeRep() != other.getNativeRep()); }
     }
     WHEN("copy assigned") {
       tcl::String other;
