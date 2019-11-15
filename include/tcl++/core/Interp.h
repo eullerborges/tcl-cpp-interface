@@ -1,11 +1,14 @@
 #ifndef TCL_INTERP_H
 #define TCL_INTERP_H
 
+#include "BaseCommand.h"
 #include "Object.h"
 #include "String.h"
 #include "defs.h"
 
+#include <memory>
 #include <string>
+#include <unordered_map>
 
 struct Tcl_Interp;
 
@@ -63,10 +66,33 @@ class Interp {
 
   Tcl_Interp* getNativeRep() const { return m_nativeRep; }
 
+  /**
+   * @brief Registers a new command on the interpreter.
+   * @param cmdName Name of the command to register
+   * @param command Object with the command definition.
+   * @return Whether the command was successfully registered.
+   */
+  bool registerCommand(const std::string& cmdName, std::unique_ptr<BaseCommand>&& command);
+
+  /**
+   * @brief Unregisters a command from the interpreter.
+   * @param cmdName Name of the command to unregister
+   * @return Whether the command was successfully unregistered.
+   */
+  bool unregisterCommand(const std::string& cmdName);
+
+  /**
+   * @return Returns the object related to the command implementation associated with a command
+   * name.
+   * @param cmdName Name of the command for which to retrieve the implementation.
+   */
+  BaseCommand& getCommand(const std::string& cmdName) { return *m_commands.at(cmdName); };
+
  private:
   Tcl_Interp* m_nativeRep{nullptr};
   bool m_owning;
   CompletionCode m_lastCompletionCode{tcl::CompletionCode::OK};
+  std::unordered_map<std::string, std::unique_ptr<BaseCommand>> m_commands;
 };
 };  // namespace tcl
 

@@ -2,11 +2,35 @@
 
 #include <tcl.h>
 
+#include <cassert>
+
 using tcl::Interp;
 
 namespace {
-tcl::CompletionCode toCompletionCode(int code) { return static_cast<tcl::CompletionCode>(code); }
+struct InterpClientData {
+  tcl::Interp& interp;
+  std::string commandName;
+};
 }  // namespace
+
+static tcl::CompletionCode toCompletionCode(int code) {
+  return static_cast<tcl::CompletionCode>(code);
+}
+
+static int commandProcProxy(ClientData clientData, Tcl_Interp* nativeInterp, int objc,
+                            Tcl_Obj* const objv[]) {
+  auto data = static_cast<InterpClientData*>(clientData);
+  auto& baseCommand = data->interp.getCommand(data->commandName);
+  std::vector<tcl::Object> args(objv+1, objv+objc);
+  return baseCommand.proc(data->interp, args);
+}
+
+static void commandDeleteHandler(ClientData clientData) {
+  auto data = static_cast<InterpClientData*>(clientData);
+  bool res = data->interp.unregisterCommand(data->commandName);
+  assert(res);
+  delete data;
+}
 
 Interp::Interp(Tcl_Interp* interp) : m_nativeRep{interp}, m_owning(false) {}
 
@@ -44,3 +68,15 @@ bool Interp::setVar(const tcl::String& name, const tcl::Object& value,
   return Tcl_ObjSetVar2(m_nativeRep, name.getNativeRep(), arrayElement, value.getNativeRep(), 0) !=
          NULL;
 }
+
+bool Interp::registerCommand(const std::string& cmdName, std::unique_ptr<BaseCommand>&& command) {
+  auto pair = m_commands.emplace(cmdName, std::move(command));
+  if (!pair.second) {
+    return false;
+  }
+  Tcl_CreateObjCommand(m_nativeRep, cmdName.c_str(), commandProcProxy,
+                       new InterpClientData{*this, cmdName}, nullptr);
+  return true;
+}
+
+bool Interp::unregisterCommand(const std::string& cmdName) { return m_commands.erase(cmdName); }

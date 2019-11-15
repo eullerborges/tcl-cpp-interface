@@ -26,7 +26,7 @@ class String : public Object {
    * @brief Constructs a Tcl string with a copy of an std::string.
    * @param str String used to initialize the Tcl String.
    */
-  explicit String(const std::string& str);
+  String(const std::string& str);
 };
 
 };  // namespace tcl
