@@ -1,6 +1,7 @@
 [requires]
 tcl/8.6.9@bincrafters/stable
 Catch2/2.10.2@catchorg/stable
+fmt/6.0.0@bincrafters/stable 
 
 [generators]
 cmake
