@@ -1,7 +1,9 @@
 #ifndef TCL_BASECOMMAND_H
 #define TCL_BASECOMMAND_H
 
-#include "tcl++/core/Object.h"
+#include "Object.h"
+#include "defs.h"
+#include "tcl++/util/span.h"
 
 #include <vector>
 
@@ -10,7 +12,8 @@ class Interp;
 
 class BaseCommand {
  public:
-  virtual int proc(Interp& interp, const std::vector<tcl::Object>& args) = 0;
+  virtual ~BaseCommand() = default;
+  virtual CompletionCode proc(Interp& interp, tcb::span<tcl::Object> args) = 0;
 };
 
 }  // namespace tcl

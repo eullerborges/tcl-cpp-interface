@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
 
-add_library(tclcore Interp.cpp NumericTypes.cpp Object.cpp String.cpp List.cpp Dict.cpp)
+add_library(tclcore OBJECT Interp.cpp NumericTypes.cpp Object.cpp String.cpp List.cpp Dict.cpp)
 target_link_libraries(tclcore PUBLIC ${CONAN_LIBS})
 target_include_directories(tclcore PUBLIC ../../include)
 

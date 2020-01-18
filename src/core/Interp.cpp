@@ -22,7 +22,7 @@ static int commandProcProxy(ClientData clientData, Tcl_Interp* nativeInterp, int
   auto data = static_cast<InterpClientData*>(clientData);
   auto& baseCommand = data->interp.getCommand(data->commandName);
   std::vector<tcl::Object> args(objv, objv+objc);
-  return baseCommand.proc(data->interp, args);
+  return static_cast<int>(baseCommand.proc(data->interp, args));
 }
 
 static void commandDeleteHandler(ClientData clientData) {
