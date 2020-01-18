@@ -21,7 +21,7 @@ static int commandProcProxy(ClientData clientData, Tcl_Interp* nativeInterp, int
                             Tcl_Obj* const objv[]) {
   auto data = static_cast<InterpClientData*>(clientData);
   auto& baseCommand = data->interp.getCommand(data->commandName);
-  std::vector<tcl::Object> args(objv+1, objv+objc);
+  std::vector<tcl::Object> args(objv, objv+objc);
   return baseCommand.proc(data->interp, args);
 }
 

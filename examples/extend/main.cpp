@@ -1,4 +1,5 @@
 #include "tcl++/core/BaseCommand.h"
+#include "tcl++/core/Dict.h"
 #include "tcl++/core/List.h"
 #include "tcl++/extend/defs.h"
 
@@ -8,9 +9,9 @@ class HelloCmd : public tcl::BaseCommand {
   int proc(tcl::Interp &interp, const std::vector<tcl::Object> &args) override {
     tcl::List l;
     for (const auto& arg : args) {
-      l.append("blupt_" + arg.getStringRep());
+      l.append(arg.getStringRep());
     }
-    interp.setResult(l);
+    interp.setResult(tcl::Dict().put("args", l));
     return TCL_OK;
   }
 };
