@@ -1,5 +1,7 @@
 #include "tcl++/core/Interp.h"
 
+#include "tcl.h"
+
 #define MAKE_EXTENSION(name, version, interp_name)                                                \
   static tcl::Interp* currentInterp = nullptr;                                                    \
                                                                                                   \

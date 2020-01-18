@@ -3,7 +3,6 @@
 #include "tcl++/core/List.h"
 #include "tcl++/extend/defs.h"
 
-#include <tcl.h>
 
 class HelloCmd : public tcl::BaseCommand {
   int proc(tcl::Interp &interp, const std::vector<tcl::Object> &args) override {
