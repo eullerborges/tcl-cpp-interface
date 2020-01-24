@@ -1,5 +1,7 @@
 #include "tcl++/core/List.h"
 
+#include "tcl++/core/Exception.h"
+
 #include <tcl.h>
 
 using tcl::List;
@@ -19,4 +21,13 @@ std::size_t List::size() const {
   int sz;
   Tcl_ListObjLength(nullptr, m_nativeRep, &sz);
   return sz;
+}
+
+template <>
+tcl::List tcl::Object::as() {
+  int sz;
+  if (Tcl_ListObjLength(nullptr, m_nativeRep, &sz) != TCL_OK) {
+    throw tcl::Exception("could not convert object to list representation");
+  }
+  return tcl::List(m_nativeRep);
 }

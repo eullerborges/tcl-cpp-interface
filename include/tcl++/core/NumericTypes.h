@@ -22,6 +22,7 @@ template <class BaseType>
 class Numeric : public Object {
  public:
   using Object::Object;
+  using base = BaseType;
 
   //! Constructs an empty Tcl int.
   Numeric();
@@ -32,9 +33,13 @@ class Numeric : public Object {
    */
   Numeric(BaseType value);
 
+  //! Return the C++ equivalent representation of the type (int, float...).
   BaseType value() const;
 
   explicit operator BaseType() const { return value(); }
+
+ private:
+  Numeric<BaseType> generateAs();
 };
 
 };  // namespace tcl

@@ -1,5 +1,6 @@
 #include "tcl++/core/Dict.h"
 
+#include "tcl++/core/Exception.h"
 #include "tcl++/core/List.h"
 #include "tcl++/core/String.h"
 
@@ -30,3 +31,12 @@ std::optional<TclClass> Dict::get(const tcl::Object& key) const {
 template std::optional<tcl::String> Dict::get(const tcl::Object& key) const;
 template std::optional<tcl::List> Dict::get(const tcl::Object& key) const;
 template std::optional<tcl::Dict> Dict::get(const tcl::Object& key) const;
+
+template <>
+tcl::Dict tcl::Object::as() {
+  int sz;
+  if (Tcl_DictObjSize(nullptr, m_nativeRep, &sz) != TCL_OK) {
+    throw tcl::Exception("could not convert object to list representation");
+  }
+  return tcl::Dict(m_nativeRep);
+}

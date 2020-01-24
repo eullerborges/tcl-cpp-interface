@@ -26,6 +26,13 @@ class Object {
   Tcl_Obj* getNativeRep() const { return m_nativeRep; }
 
   /**
+   * @brief Converts this type to a derived Tcl class (like Int, String, List, etc.).
+   * @throws tcl::Exception if the conversion fails.
+   */
+  template <class Derived, std::enable_if_t<std::is_base_of_v<Object, Derived>, int> = 0>
+  Derived as();
+
+  /**
    * @brief Returns the string representation of an object.
    * Every core Tcl object can be represented as a string. This method returns
    * the underlying string representation.

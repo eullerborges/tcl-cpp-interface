@@ -1,3 +1,4 @@
+#include "tcl++/core/Exception.h"
 #include "tcl++/core/NumericTypes.h"
 
 #include <tcl.h>
@@ -37,8 +38,28 @@ BaseType Numeric<BaseType>::value() const
 {
   BaseType val{};
   auto res = get(m_nativeRep, val);
-  assert(res);
+  assert(res == TCL_OK);
   return val;
+}
+
+template <class Derived, std::enable_if_t<std::is_base_of_v<tcl::Object, Derived>, int> = 0>
+Derived tcl::Object::as()
+{
+  typename Derived::base val;
+  auto res = get(m_nativeRep, val);
+  if (res == TCL_OK) {
+    return Derived(m_nativeRep);
+  }
+  else {
+    throw tcl::Exception("could not convert object to numeric representation");
+  }
+}
+
+//! Used to force the generation of tcl::Object::as for the numeric type.
+template <class BaseType>
+Numeric<BaseType> Numeric<BaseType>::generateAs()
+{
+  return tcl::Object::as<Numeric<BaseType>>();
 }
 
 namespace tcl {
@@ -48,4 +69,6 @@ template class Numeric<long>;
 template class Numeric<Tcl_WideInt>;
 template class Numeric<bool>;
 template class Numeric<double>;
+
+// template tcl::Int tcl::Object::as<tcl::Int>();
 }
