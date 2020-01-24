@@ -1,5 +1,7 @@
 #include "tcl++/core/Interp.h"
 
+#include "tcl++/core/Exception.h"
+
 #include <tcl.h>
 
 #include <cassert>
@@ -21,7 +23,7 @@ static int commandProcProxy(ClientData clientData, Tcl_Interp* nativeInterp, int
                             Tcl_Obj* const objv[]) {
   auto data = static_cast<InterpClientData*>(clientData);
   auto& baseCommand = data->interp.getCommand(data->commandName);
-  std::vector<tcl::Object> args(objv, objv+objc);
+  std::vector<tcl::Object> args(objv, objv + objc);
   return static_cast<int>(baseCommand.proc(data->interp, args));
 }
 
@@ -80,3 +82,14 @@ bool Interp::registerCommand(const std::string& cmdName, std::unique_ptr<BaseCom
 }
 
 bool Interp::unregisterCommand(const std::string& cmdName) { return m_commands.erase(cmdName); }
+
+void Interp::output(const std::string& str) {
+  Tcl_Channel stdoutChannel = Tcl_GetChannel(m_nativeRep, "stdout", NULL);
+  if (!stdoutChannel) {
+    throw tcl::Exception("unable to open stdout");
+  }
+  auto res = Tcl_WriteChars(stdoutChannel, str.data(), str.length());
+  if (res == -1 || res != str.length() + 1) {
+    throw tcl::Exception(std::string("writing to stdout failed: ") + Tcl_ErrnoMsg(Tcl_GetErrno()));
+  }
+}

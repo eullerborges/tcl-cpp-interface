@@ -8,13 +8,19 @@
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>
+#include <vector>
 
 namespace tcl {
 
 namespace internal {
 struct Switch {
-  bool isOptional;  //! This switch is optional on the command line.
   ArgValidator* validator;  //! The argument validator for this switch.
+  bool isOptional;          //! This switch is optional on the command line.
+};
+
+struct Argument {
+  ArgValidator* validator;  //! The argument validator for the argument.
+  bool isOptional;          //! This argument is optional on the command line.
 };
 }  // namespace internal
 
@@ -61,12 +67,14 @@ class UnixCommandParser : public tcl::BaseCommand {
   //! Returns whether a given switch was provided to this command.
   bool handledSwitch(const std::string& switchName);
 
+  void setPositionalArg(ArgValidator& validator, bool optional = false);
+
  protected:
   /**
    * @brief Entry point to the command coming from the interpreter.
    * @warning Improper overriding will break the syntax parsing.
    */
-  CompletionCode proc(Interp& interp, tcb::mspan<tcl::Object> args) override;
+  CompletionCode proc(Interp& interp, tcb::span<tcl::Object> args) override;
   /**
    * @brief Implementation of the parser logic.
    * @warning Improper overriding will break the syntax parsing.
@@ -78,10 +86,12 @@ class UnixCommandParser : public tcl::BaseCommand {
 
   std::unordered_map<std::string, std::unique_ptr<UnixCommandParser>> m_subcommands;
   std::unordered_map<std::string, internal::Switch> m_switches;
+  std::vector<internal::Argument> m_positionalArgs;
   bool m_requireSubcommand{false};
 
   // State reset before every parse
   std::unordered_set<std::string> m_matchedSwitches;
+  std::size_t m_matchedPositionalArgs {0};
 };
 
 };  // namespace tcl

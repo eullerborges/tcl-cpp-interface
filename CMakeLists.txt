@@ -23,4 +23,5 @@ add_subdirectory(examples/extend)
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
   add_subdirectory(tests/core)
+  add_subdirectory(tests/commands)
 endif()

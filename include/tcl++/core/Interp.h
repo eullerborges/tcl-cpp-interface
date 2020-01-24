@@ -88,6 +88,13 @@ class Interp {
    */
   BaseCommand& getCommand(const std::string& cmdName) { return *m_commands.at(cmdName); };
 
+  /**
+   * @brief Writes characters to stdout.
+   * @param str String to write.
+   * @throws Exception if stdout cannot be written to.
+   */
+  void output(const std::string& str);
+
  private:
   Tcl_Interp* m_nativeRep{nullptr};
   bool m_owning;
