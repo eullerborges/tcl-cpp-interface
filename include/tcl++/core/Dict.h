@@ -19,10 +19,10 @@ class Dict : public Object {
    * @param value Value to insert.
    * @return Reference to this dictionary.
    */
-  Dict &put(const tcl::Object &key, const tcl::Object &value);
+  Dict& put(const tcl::Object& key, const tcl::Object& value);
   //! Convenience overloaod for inserting with string keys
-  Dict &put(const tcl::String &key, const tcl::Object &value) {
-    return put(static_cast<const Object &>(key), value);
+  Dict& put(const tcl::String& key, const tcl::Object& value) {
+    return put(static_cast<const Object&>(key), value);
   }
 
   /**
@@ -31,7 +31,7 @@ class Dict : public Object {
    * @return The value for the key if existing, empty optional otherwise.
    */
   template <class TclClass = Object>
-  std::optional<TclClass> get(const tcl::Object &key) const {
+  std::optional<TclClass> get(const tcl::Object& key) const {
     auto val = internalGet(key);
     return val ? tcl::Object(val).as<TclClass>() : std::optional<TclClass>();
   }
@@ -40,7 +40,7 @@ class Dict : public Object {
   std::size_t size() const;
 
  private:
-  Tcl_Obj *internalGet(const tcl::Object &key) const;
+  Tcl_Obj* internalGet(const tcl::Object& key) const;
 };
 
 };  // namespace tcl

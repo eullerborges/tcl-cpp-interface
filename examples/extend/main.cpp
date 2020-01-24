@@ -8,11 +8,11 @@
 
 class DummyValidator : public tcl::ArgValidator {
  public:
-  void validate(tcl::Interp &interp, tcl::Object &obj) override {
+  void validate(tcl::Interp& interp, tcl::Object& obj) override {
     m_value = "dummy " + obj.getStringRep();
   }
 
-  const std::string &value() { return m_value; }
+  const std::string& value() { return m_value; }
 
  private:
   std::string m_value;
@@ -20,9 +20,7 @@ class DummyValidator : public tcl::ArgValidator {
 
 class IntVal : public tcl::ArgValidator {
  public:
-  void validate(tcl::Interp &interp, tcl::Object &obj) override {
-    m_value = obj.as<tcl::Int>();
-  }
+  void validate(tcl::Interp& interp, tcl::Object& obj) override { m_value = obj.as<tcl::Int>(); }
 
   const int value() { return m_value.value(); }
 
@@ -31,9 +29,9 @@ class IntVal : public tcl::ArgValidator {
 };
 
 class HelloCmd : public tcl::BaseCommand {
-  tcl::CompletionCode proc(tcl::Interp &interp, tcb::span<tcl::Object> args) override {
+  tcl::CompletionCode proc(tcl::Interp& interp, tcb::span<tcl::Object> args) override {
     tcl::List l;
-    for (const auto &arg : args) {
+    for (const auto& arg : args) {
       l.append(arg.getStringRep());
     }
     interp.setResult(tcl::Dict().put("args", l));
@@ -48,7 +46,7 @@ class AddSubCmd : public tcl::UnixCommandParser {
     setPositionalArg(m_operand1);
     setPositionalArg(m_operand2);
   }
-  void doLogic(tcl::Interp &interp) override {
+  void doLogic(tcl::Interp& interp) override {
     if (handledSwitch("-value")) {
       interp.output("switch provided, value is " + m_arg.value() + "\n");
     }
@@ -67,11 +65,15 @@ class CalcCmd : public tcl::UnixCommandParser {
     setSubcommand("add", std::make_unique<AddSubCmd>());
     requireSubcommand();
   }
-  void doLogic(tcl::Interp &interp) override { interp.setResult(tcl::String("calc cmd")); }
+  void doLogic(tcl::Interp& interp) override { interp.setResult(tcl::String("calc cmd")); }
 };
 
+#include <iostream>
 MAKE_EXTENSION(Math_example, "1.0", myinterp) {
   myinterp.setVar("test_var", tcl::String("test_value"));
   myinterp.registerCommand("hello_cmd", std::make_unique<HelloCmd>());
   myinterp.registerCommand("calc", std::make_unique<CalcCmd>());
+  tcl::Dict d;
+  d.put("this", tcl::List().append("test").append("list"));
+  std::cout << d.get(tcl::String("this"))->as<tcl::List>().getStringRep();
 }
