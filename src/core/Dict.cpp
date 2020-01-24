@@ -21,17 +21,6 @@ Dict& Dict::put(const tcl::Object& key, const tcl::Object& value) {
   return *this;
 }
 
-template <class TclClass>
-std::optional<TclClass> Dict::get(const tcl::Object& key) const {
-  Tcl_Obj* valptr;
-  Tcl_DictObjGet(nullptr, m_nativeRep, key.getNativeRep(), &valptr);
-  return TclClass(valptr);
-}
-
-template std::optional<tcl::String> Dict::get(const tcl::Object& key) const;
-template std::optional<tcl::List> Dict::get(const tcl::Object& key) const;
-template std::optional<tcl::Dict> Dict::get(const tcl::Object& key) const;
-
 template <>
 tcl::Dict tcl::Object::as() {
   int sz;
@@ -39,4 +28,11 @@ tcl::Dict tcl::Object::as() {
     throw tcl::Exception("could not convert object to list representation");
   }
   return tcl::Dict(m_nativeRep);
+}
+
+Tcl_Obj* Dict::internalGet(const tcl::Object& key) const
+{
+  Tcl_Obj* valptr;
+  auto res = Tcl_DictObjGet(nullptr, m_nativeRep, key.getNativeRep(), &valptr);
+  return res == TCL_OK ? valptr : nullptr;
 }

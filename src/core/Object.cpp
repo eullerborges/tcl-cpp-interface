@@ -47,3 +47,8 @@ std::string Object::getStringRep() const {
   assert(rep);
   return {rep, static_cast<std::size_t>(length)};
 }
+
+template <>
+tcl::Object tcl::Object::as() {
+  return tcl::Object(m_nativeRep);
+}
