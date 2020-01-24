@@ -69,6 +69,4 @@ template class Numeric<long>;
 template class Numeric<Tcl_WideInt>;
 template class Numeric<bool>;
 template class Numeric<double>;
-
-// template tcl::Int tcl::Object::as<tcl::Int>();
 }
