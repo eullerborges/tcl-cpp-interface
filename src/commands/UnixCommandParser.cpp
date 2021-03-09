@@ -9,7 +9,7 @@
 #include <iostream>
 #include <vector>
 
-#define DEBUG 1 && std::cerr << "[DEBUG] "
+#define DEBUG 0 && std::cerr << "[DEBUG] "
 
 using tcl::CompletionCode;
 using tcl::UnixCommandParser;
@@ -55,7 +55,7 @@ void UnixCommandParser::parse(Interp& interp, tcb::span<tcl::Object> args) {
       if (validSwitchSyntax(switchStr) && m_switches.count(switchStr)) {
         auto& zwitch = m_switches[switchStr];
         if (zwitch.validator) {
-          if (!std::distance(++it, argsToParse.end())) {
+          if (++it == argsToParse.end()) {
             throw tcl::Exception(fmt::format("switch '{}' expects an argument", switchStr));
           }
           DEBUG << fmt::format("Switch '{}' has argument, calling validator.\n", switchStr);
