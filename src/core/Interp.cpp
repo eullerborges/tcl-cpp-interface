@@ -77,7 +77,7 @@ bool Interp::registerCommand(const std::string& cmdName, std::unique_ptr<BaseCom
     return false;
   }
   Tcl_CreateObjCommand(m_nativeRep, cmdName.c_str(), commandProcProxy,
-                       new InterpClientData{*this, cmdName}, nullptr);
+                       new InterpClientData{*this, cmdName}, commandDeleteHandler);
   return true;
 }
 
