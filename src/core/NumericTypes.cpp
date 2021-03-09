@@ -1,5 +1,6 @@
-#include "tcl++/core/Exception.h"
 #include "tcl++/core/NumericTypes.h"
+
+#include "tcl++/core/Exception.h"
 
 #include <tcl.h>
 
@@ -8,9 +9,10 @@
 using tcl::Numeric;
 
 namespace {
-template<class BaseType>
+template <class BaseType>
 Tcl_Obj* instantiate(BaseType value);
 
+// clang-format off
 template<> Tcl_Obj* instantiate<int>(int value) { return Tcl_NewIntObj(value); }
 template<> Tcl_Obj* instantiate<long>(long value) { return Tcl_NewLongObj(value); }
 template<> Tcl_Obj* instantiate<Tcl_WideInt>(Tcl_WideInt value) { return Tcl_NewWideIntObj(value); }
@@ -25,17 +27,17 @@ template <> int get<long>(Tcl_Obj* nativeRep, long& val) { return Tcl_GetLongFro
 template <> int get<Tcl_WideInt>(Tcl_Obj* nativeRep, Tcl_WideInt& val) { return Tcl_GetWideIntFromObj(nullptr, nativeRep, &val); }
 template <> int get<bool>(Tcl_Obj* nativeRep, bool& val) { return Tcl_GetBooleanFromObj(nullptr, nativeRep, reinterpret_cast<int*>(&val)); }
 template <> int get<double>(Tcl_Obj* nativeRep, double& val) { return Tcl_GetDoubleFromObj(nullptr, nativeRep, &val); }
+// clang-format on
 }  // namespace
 
-template<class BaseType>
+template <class BaseType>
 Numeric<BaseType>::Numeric(BaseType value) : tcl::Object(instantiate<BaseType>(value)) {}
 
 template <class BaseType>
-Numeric<BaseType>::Numeric() : Numeric(BaseType{}){}
+Numeric<BaseType>::Numeric() : Numeric(BaseType{}) {}
 
 template <class BaseType>
-BaseType Numeric<BaseType>::value() const
-{
+BaseType Numeric<BaseType>::value() const {
   BaseType val{};
   auto res = get(m_nativeRep, val);
   assert(res == TCL_OK);
@@ -43,30 +45,28 @@ BaseType Numeric<BaseType>::value() const
 }
 
 template <class Derived, std::enable_if_t<std::is_base_of_v<tcl::Object, Derived>, int> = 0>
-Derived tcl::Object::as()
-{
+Derived tcl::Object::as() {
   typename Derived::base val;
   auto res = get(m_nativeRep, val);
   if (res == TCL_OK) {
     return Derived(m_nativeRep);
-  }
-  else {
+  } else {
     throw tcl::Exception("could not convert object to numeric representation");
   }
 }
 
-//! Used to force the generation of tcl::Object::as for the numeric type.
-template <class BaseType>
-Numeric<BaseType> Numeric<BaseType>::generateAs()
-{
-  return tcl::Object::as<Numeric<BaseType>>();
-}
-
 namespace tcl {
-// Forcing explicit instantiation
+// Forcing explicit instantiations.
 template class Numeric<int>;
 template class Numeric<long>;
-template class Numeric<Tcl_WideInt>;
+template class Numeric<long long>;
 template class Numeric<bool>;
 template class Numeric<double>;
-}
+
+template Numeric<int> tcl::Object::as<Numeric<int>>();
+template Numeric<long> tcl::Object::as<Numeric<long>>();
+template Numeric<long long> tcl::Object::as<Numeric<long long>>();
+template Numeric<bool> tcl::Object::as<Numeric<bool>>();
+template Numeric<double> tcl::Object::as<Numeric<double>>();
+
+}  // namespace tcl

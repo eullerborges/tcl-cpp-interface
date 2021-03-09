@@ -6,6 +6,10 @@
 
 using tcl::List;
 
+struct ConversionFailure : tcl::Exception {
+  ConversionFailure() : tcl::Exception("could not convert object to list representation") {}
+};
+
 List::List() : tcl::Object(Tcl_NewListObj(0, nullptr)) {}
 
 List& List::append(const Object& obj) {
@@ -24,10 +28,11 @@ std::size_t List::size() const {
 }
 
 template <>
-tcl::List tcl::Object::as() {
+List tcl::Object::as() {
   int sz;
   if (Tcl_ListObjLength(nullptr, m_nativeRep, &sz) != TCL_OK) {
-    throw tcl::Exception("could not convert object to list representation");
+    throw ConversionFailure();
   }
   return tcl::List(m_nativeRep);
 }
+

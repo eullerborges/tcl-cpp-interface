@@ -10,6 +10,7 @@ template <class BaseType> class Numeric;
 // Avalailable Tcl integer types
 using Int = Numeric<int>;
 using Long = Numeric<long>;
+using WideInt = Numeric<long long>;
 using Boolean = Numeric<bool>;
 using Double = Numeric<double>;
 
@@ -24,6 +25,8 @@ class Numeric : public Object {
   using Object::Object;
   using base = BaseType;
 
+  using Object::as;
+
   //! Constructs an empty Tcl int.
   Numeric();
 
@@ -37,9 +40,6 @@ class Numeric : public Object {
   BaseType value() const;
 
   explicit operator BaseType() const { return value(); }
-
- private:
-  Numeric<BaseType> generateAs();
 };
 
 };  // namespace tcl
