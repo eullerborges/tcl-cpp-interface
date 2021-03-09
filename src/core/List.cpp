@@ -36,3 +36,19 @@ List tcl::Object::as() const {
   return tcl::List(m_nativeRep);
 }
 
+template <bool Const>
+typename List::base_iterator<Const>::pointer List::base_iterator<Const>::operator->() const {
+  Tcl_Obj* objPtr;
+  // NOTE: another option is to use Tcl_ListObjGetElements and store it in the
+  // iterator. That seems to not be 100% safe though, as in the implementation
+  // Tcl mentions that any call to the list functions might invalidate the returned array.
+  if (Tcl_ListObjIndex(nullptr, m_parent->getNativeRep(), m_idx, &objPtr) != TCL_OK) {
+    throw ConversionFailure();
+  }
+  auto& mutableValue = const_cast<std::optional<Object>&>(m_value);
+  mutableValue = std::optional<Object>(objPtr);
+  return &*mutableValue;
+}
+
+template List::iterator::pointer List::iterator::operator->() const;
+template List::const_iterator::pointer List::const_iterator::operator->() const;
