@@ -121,7 +121,7 @@ SCENARIO("UnixCommandParser basic operations", "[unix_cmd_parser]") {
       auto res = interp.eval("calc add invalid_arg");
       THEN ("ArgValidator error is set as result") {
         REQUIRE(res == tcl::CompletionCode::ERROR);
-        REQUIRE(interp.getResult().getStringRep() == "Could not convert object to numeric representation");
+        REQUIRE(interp.getResult().getStringRep() == "could not convert object to numeric representation");
       }
     }
 
