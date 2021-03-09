@@ -16,6 +16,8 @@ set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
+include(${CMAKE_CURRENT_LIST_DIR}/cmake/compiler_setup.cmake)
+
 include(CTest)
 
 add_subdirectory(src)
