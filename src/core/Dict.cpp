@@ -22,7 +22,7 @@ Dict& Dict::put(const tcl::Object& key, const tcl::Object& value) {
 }
 
 template <>
-tcl::Dict tcl::Object::as() {
+tcl::Dict tcl::Object::as() const {
   int sz;
   if (Tcl_DictObjSize(nullptr, m_nativeRep, &sz) != TCL_OK) {
     throw tcl::Exception("could not convert object to list representation");

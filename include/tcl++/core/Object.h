@@ -30,7 +30,7 @@ class Object {
    * @throws tcl::Exception if the conversion fails.
    */
   template <class Derived, std::enable_if_t<std::is_base_of_v<Object, Derived>, int> = 0>
-  Derived as();
+  Derived as() const;
 
   /**
    * @brief Returns the string representation of an object.

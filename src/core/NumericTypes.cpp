@@ -45,7 +45,7 @@ BaseType Numeric<BaseType>::value() const {
 }
 
 template <class Derived, std::enable_if_t<std::is_base_of_v<tcl::Object, Derived>, int> = 0>
-Derived tcl::Object::as() {
+Derived tcl::Object::as() const {
   typename Derived::base val;
   auto res = get(m_nativeRep, val);
   if (res == TCL_OK) {
@@ -63,10 +63,10 @@ template class Numeric<long long>;
 template class Numeric<bool>;
 template class Numeric<double>;
 
-template Numeric<int> tcl::Object::as<Numeric<int>>();
-template Numeric<long> tcl::Object::as<Numeric<long>>();
-template Numeric<long long> tcl::Object::as<Numeric<long long>>();
-template Numeric<bool> tcl::Object::as<Numeric<bool>>();
-template Numeric<double> tcl::Object::as<Numeric<double>>();
+template Numeric<int> tcl::Object::as<Numeric<int>>() const;
+template Numeric<long> tcl::Object::as<Numeric<long>>() const;
+template Numeric<long long> tcl::Object::as<Numeric<long long>>() const;
+template Numeric<bool> tcl::Object::as<Numeric<bool>>() const;
+template Numeric<double> tcl::Object::as<Numeric<double>>() const;
 
 }  // namespace tcl

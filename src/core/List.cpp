@@ -28,7 +28,7 @@ std::size_t List::size() const {
 }
 
 template <>
-List tcl::Object::as() {
+List tcl::Object::as() const {
   int sz;
   if (Tcl_ListObjLength(nullptr, m_nativeRep, &sz) != TCL_OK) {
     throw ConversionFailure();

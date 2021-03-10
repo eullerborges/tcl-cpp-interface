@@ -49,6 +49,6 @@ std::string Object::getStringRep() const {
 }
 
 template <>
-tcl::Object tcl::Object::as() {
+tcl::Object tcl::Object::as() const {
   return tcl::Object(m_nativeRep);
 }
